@@ -17660,16 +17660,25 @@ UE.plugins['video'] = function (){
                     +posterUrl+') no-repeat center center; border:1px solid gray;'+(align ? 'float:' + align + ';': '')+'" />'
                 break;
             case 'embed':
-                str = '<embed type="application/x-shockwave-flash" class="' + classname + '" pluginspage="http://www.macromedia.com/go/getflashplayer"' +
-                    ' src="' +  utils.html(url) + '" width="' + width  + '" height="' + height  + '"'  + (align ? ' style="float:' + align + '"': '') +
+                str = '<embed src="' +  utils.html(url) + '" width="' + width  + '" height="' + height  + '"'  + (align ? ' style="float:' + align + '"': '') +
                     ' wmode="transparent" play="true" loop="false" menu="false" allowscriptaccess="never" allowfullscreen="true" >';
                 break;
-            case 'video':
+/*            case 'video':
                 var ext = url.substr(url.lastIndexOf('.') + 1);
                 if(ext == 'ogv') ext = 'ogg';
                 str = '<video' + (id ? ' id="' + id + '"' : '') + ' class="' + classname + ' video-js" ' + (align ? ' style="float:' + align + '"': '') +
                     ' controls preload="none" width="' + width + '" height="' + height + '" src="' + url + '" data-setup="{}">' +
                     '<source src="' + url + '" type="video/' + ext + '" /></video>';
+                break;*/
+
+            case 'video':
+                var ext = url.substr(url.lastIndexOf('.') + 1);
+                if (ext == 'ogv') ext = 'ogg';
+                if (ext == "mp3") {
+                    str = '<audio' + (id ? ' id="' + id + '"' : '') + ' class=" audio-js" ' + (align ? ' style="float:' + align + '"' : '') +' controls preload="none" width="' + width + '" height="' + height + '" src="' + url + '">" /></audio>';
+                } else {
+                    str = '<video' + (id ? ' id="' + id + '"' : '') + (align ? ' style="float:' + align + '"' : '') + 'controls width="' + width + '" height="' + height + '" src="' + url + '" data-setup="{}">' + '<source src="' + url + '" type="video/' + ext + '" /></video>';
+                }
                 break;
         }
         return str;
@@ -17769,16 +17778,18 @@ UE.plugins['video'] = function (){
             for(var i=0,vi,len = videoObjs.length;i<len;i++){
                 vi = videoObjs[i];
                 cl = (type == 'upload' ? 'edui-upload-video video-js vjs-default-skin':'edui-faked-video');
-                html.push(creatInsertStr( vi.url, vi.width || 420,  vi.height || 280, id + i, null, cl, 'image'));
+                //youfang : update for 视频问题
+                html.push(creatInsertStr( vi.url, vi.width || 420,  vi.height || 280, id + i, null, cl, 'video'));
             }
             me.execCommand("inserthtml",html.join(""),true);
-            var rng = this.selection.getRange();
-            for(var i= 0,len=videoObjs.length;i<len;i++){
-                var img = this.document.getElementById('tmpVedio'+i);
-                domUtils.removeAttributes(img,'id');
-                rng.selectNode(img).select();
-                me.execCommand('imagefloat',videoObjs[i].align)
-            }
+            //youfang : update for 视频问题
+            //var rng = this.selection.getRange();
+            //for(var i= 0,len=videoObjs.length;i<len;i++){
+            //    var img = this.document.getElementById('tmpVedio'+i);
+            //    domUtils.removeAttributes(img,'id');
+            //    rng.selectNode(img).select();
+            //    me.execCommand('imagefloat',videoObjs[i].align)
+            //}
         },
         queryCommandState : function(){
             var img = me.selection.getRange().getClosedNode(),
