@@ -10,8 +10,8 @@ public class UploadConstant {
     /**
      * 注： accessKeyId和accessKeySecret是全局配置参数，需要按实际值填写。
      */
-    public static final String ACCESS_KEY_ID = "LTAIT5SwOfWsF2a7";
-    public static final String ACCESS_KEY_SECRET = "reSSVABBqf8dprEbnuB2WGpFELrl4g";
+    public static final String ACCESS_KEY_ID = "**";
+    public static final String ACCESS_KEY_SECRET = "**";
 
     /**
      * 最大上传大小 ： 30Mb
